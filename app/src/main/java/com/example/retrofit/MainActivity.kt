@@ -33,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     private fun searchUser(username: String) {
         rvAdapter.submitData(emptyList())
         binding.progress.isVisible = true
+        binding.resultsCountTv.text = null
+
 
         ApiClient.getClient()?.create(ApiService::class.java)?.getUsersByName(username)
             ?.enqueue(object : Callback,
@@ -43,8 +45,7 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     response.body()?.items?.let {
                         buildRecyclerView(it)
-                        binding.textView.isVisible = it.isEmpty()
-
+                        binding.resultsCountTv.text = it.size.toString()
                     }
                 }
 
