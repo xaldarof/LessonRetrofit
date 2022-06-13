@@ -29,7 +29,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun searchUser(username: String) {
+        rvAdapter.submitData(emptyList())
         binding.progress.isVisible = true
 
         ApiClient.getClient()?.create(ApiService::class.java)?.getUsersByName(username)
@@ -41,6 +43,8 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     response.body()?.items?.let {
                         buildRecyclerView(it)
+                        binding.textView.isVisible = it.isEmpty()
+
                     }
                 }
 
@@ -53,5 +57,6 @@ class MainActivity : AppCompatActivity() {
     private fun buildRecyclerView(accounts: List<GithubAccount>) {
         binding.progress.isVisible = false
         rvAdapter.submitData(accounts)
+
     }
 }
