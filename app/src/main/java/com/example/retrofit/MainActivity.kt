@@ -3,6 +3,7 @@ package com.example.retrofit
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.widget.addTextChangedListener
 import com.example.retrofit.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Response
@@ -21,12 +22,20 @@ class MainActivity : AppCompatActivity() {
         rvAdapter = AccountsRecyclerAdapter()
         binding.rv.adapter = rvAdapter
 
-        ApiClient.getClient()?.create(ApiService::class.java)?.getUsersByName("Game")
+
+        binding.appCompatEditText.addTextChangedListener {
+            if (it.toString().length > 4) searchUser(it.toString())
+        }
+    }
+
+    private fun searchUser(username: String) {
+        ApiClient.getClient()?.create(ApiService::class.java)?.getUsersByName(username)
             ?.enqueue(object : Callback,
                 retrofit2.Callback<AccountBaseResponse> {
                 override fun onResponse(
                     call: Call<AccountBaseResponse>,
-                    response: Response<AccountBaseResponse>) {
+                    response: Response<AccountBaseResponse>,
+                ) {
 
                     response.body()?.items?.let {
                         buildRecyclerView(it)
