@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
                     call: Call<AccountBaseResponse>,
                     response: Response<AccountBaseResponse>,
                 ) {
-
                     response.body()?.items?.let {
                         buildRecyclerView(it)
                     }
