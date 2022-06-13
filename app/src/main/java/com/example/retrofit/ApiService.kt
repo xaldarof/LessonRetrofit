@@ -13,7 +13,7 @@ interface ApiService {
 
 
     @GET("search/users")
-    fun getUsersByName(@Query("q") query: String): retrofit2.Call<List<String>>
+    fun getUsersByName(@Query("q") query: String): retrofit2.Call<AccountBaseResponse>
 
 
 }
