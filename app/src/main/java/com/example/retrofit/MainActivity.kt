@@ -3,6 +3,7 @@ package com.example.retrofit
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.retrofit.databinding.ActivityMainBinding
 import retrofit2.Call
@@ -29,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchUser(username: String) {
+        binding.progress.isVisible = true
+
         ApiClient.getClient()?.create(ApiService::class.java)?.getUsersByName(username)
             ?.enqueue(object : Callback,
                 retrofit2.Callback<AccountBaseResponse> {
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun buildRecyclerView(accounts: List<GithubAccount>) {
+        binding.progress.isVisible = false
         rvAdapter.submitData(accounts)
     }
 }
