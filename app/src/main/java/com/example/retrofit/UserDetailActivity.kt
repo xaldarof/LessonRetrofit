@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Response
 import javax.security.auth.callback.Callback
 
-class UserDetailActivity : AppCompatActivity() {
+class UserDetailActivity : AppCompatActivity(), OnUserDetailViewClickListener {
 
     private lateinit var binding: ActivityUserDetailBinding
 
@@ -17,6 +17,9 @@ class UserDetailActivity : AppCompatActivity() {
         binding = ActivityUserDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val username = intent.extras?.getString("username")
+
+        val adapter = AccountsRecyclerAdapter(this)
+        binding.followerRv.adapter = adapter
 
         val retrofit = ApiClient.getClient()?.create(ApiService::class.java)
 
@@ -28,19 +31,39 @@ class UserDetailActivity : AppCompatActivity() {
                     response: Response<GithubAccount>,
                 ) {
                     response.body()?.let { initViews(it) }
+
                 }
 
                 override fun onFailure(call: Call<GithubAccount>, t: Throwable) {
-                    TODO("Not yet implemented")
+
+                }
+            })
+
+
+            retrofit?.getFollowersByUserName(username)?.enqueue(object : Callback,
+                retrofit2.Callback<List<GithubAccount>> {
+                override fun onResponse(
+                    call: Call<List<GithubAccount>>,
+                    response: Response<List<GithubAccount>>,
+                ) {
+                    response.body()?.let { adapter.submitData(it) }
                 }
 
+                override fun onFailure(call: Call<List<GithubAccount>>, t: Throwable) {
+
+                }
             })
         }
     }
+
 
     private fun initViews(githubAccount: GithubAccount) {
         Picasso.get().load(githubAccount.avatarUrl)
             .into(binding.avatar)
         binding.usernameTv.text = githubAccount.login
+    }
+
+    override fun on(githubAccount: GithubAccount) {
+
     }
 }
