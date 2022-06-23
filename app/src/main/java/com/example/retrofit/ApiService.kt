@@ -1,6 +1,8 @@
 package com.example.retrofit
 
+import retrofit2.Call
 import retrofit2.http.*
+import javax.security.auth.callback.Callback
 
 
 /**
@@ -20,7 +22,7 @@ interface ApiService {
 
 
     @GET("users/{username}/followers")
-    fun getFollowersByUserName(@Path("username") username: String): List<GithubAccount>
+    fun getFollowersByUserName(@Path("username") username: String): Call<List<GithubAccount>>
 
 
 }
