@@ -1,5 +1,6 @@
 package com.example.retrofit
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Response
 import javax.security.auth.callback.Callback
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnUserDetailViewClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var rvAdapter: AccountsRecyclerAdapter
@@ -20,9 +21,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
-        rvAdapter = AccountsRecyclerAdapter()
+        rvAdapter = AccountsRecyclerAdapter(this)
         binding.rv.adapter = rvAdapter
-
 
         binding.appCompatEditText.addTextChangedListener {
             if (it.toString().length > 4) searchUser(it.toString())
@@ -36,7 +36,9 @@ class MainActivity : AppCompatActivity() {
         binding.resultsCountTv.text = null
 
 
-        ApiClient.getClient()?.create(ApiService::class.java)?.getUsersByName(username)
+        val service = ApiClient.getClient()?.create(ApiService::class.java)
+
+        service?.getUsersByName(username)
             ?.enqueue(object : Callback,
                 retrofit2.Callback<AccountBaseResponse> {
                 override fun onResponse(
@@ -59,5 +61,11 @@ class MainActivity : AppCompatActivity() {
         binding.progress.isVisible = false
         rvAdapter.submitData(accounts)
 
+    }
+
+    override fun on(githubAccount: GithubAccount) {
+        val intent = Intent(this, UserDetailActivity::class.java)
+        intent.putExtra("username", githubAccount.login)
+        startActivity(intent)
     }
 }

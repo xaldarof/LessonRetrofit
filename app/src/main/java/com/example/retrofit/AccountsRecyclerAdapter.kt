@@ -11,7 +11,9 @@ import com.squareup.picasso.Picasso
  * @Date: 13/06/2022
  */
 
-class AccountsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AccountsRecyclerAdapter(
+    private val listener: OnUserDetailViewClickListener,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val currentList = ArrayList<GithubAccount>()
 
@@ -23,7 +25,10 @@ class AccountsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return Vh(ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return Vh(
+            ItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            listener
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -33,9 +38,21 @@ class AccountsRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     override fun getItemCount(): Int = currentList.size
 }
 
-private class Vh(private val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
+private class Vh(
+    private val binding: ItemBinding,
+    private val listener: OnUserDetailViewClickListener,
+) : RecyclerView.ViewHolder(binding.root) {
+
     fun onBind(githubAccount: GithubAccount) {
         binding.nameTv.text = githubAccount.login
         Picasso.get().load(githubAccount.avatarUrl).into(binding.image)
+
+        binding.root.setOnClickListener {
+            listener.on(githubAccount)
+        }
     }
+}
+
+interface OnUserDetailViewClickListener {
+    fun on(githubAccount: GithubAccount)
 }

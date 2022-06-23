@@ -1,7 +1,6 @@
 package com.example.retrofit
 
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 /**
@@ -14,6 +13,10 @@ interface ApiService {
 
     @GET("search/users")
     fun getUsersByName(@Query("q") query: String): retrofit2.Call<AccountBaseResponse>
+
+
+    @GET("users/{username}")
+    fun getInfoByUserName(@Path("username") username: String): retrofit2.Call<GithubAccount>
 
 
 }
