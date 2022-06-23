@@ -46,7 +46,10 @@ class UserDetailActivity : AppCompatActivity(), OnUserDetailViewClickListener {
                     call: Call<List<GithubAccount>>,
                     response: Response<List<GithubAccount>>,
                 ) {
-                    response.body()?.let { adapter.submitData(it) }
+                    response.body()?.let {
+                        binding.followersCountTv.text = it.size.toString()
+                        adapter.submitData(it)
+                    }
                 }
 
                 override fun onFailure(call: Call<List<GithubAccount>>, t: Throwable) {
