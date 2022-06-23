@@ -31,7 +31,6 @@ class UserDetailActivity : AppCompatActivity(), OnUserDetailViewClickListener {
                     response: Response<GithubAccount>,
                 ) {
                     response.body()?.let { initViews(it) }
-
                 }
 
                 override fun onFailure(call: Call<GithubAccount>, t: Throwable) {

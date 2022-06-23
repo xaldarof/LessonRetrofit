@@ -20,7 +20,7 @@ interface ApiService {
 
 
     @GET("users/{username}/followers")
-    fun getFollowersByUserName(@Path("username") username: String): retrofit2.Call<List<GithubAccount>>
+    fun getFollowersByUserName(@Path("username") username: String): List<GithubAccount>
 
 
 }

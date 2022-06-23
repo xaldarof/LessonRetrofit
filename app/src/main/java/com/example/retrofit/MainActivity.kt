@@ -7,6 +7,9 @@ import android.util.Log
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.retrofit.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 import javax.security.auth.callback.Callback
@@ -27,6 +30,17 @@ class MainActivity : AppCompatActivity(), OnUserDetailViewClickListener {
         binding.appCompatEditText.addTextChangedListener {
             if (it.toString().length > 4) searchUser(it.toString())
         }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            start1()
+        }
+    }
+
+    private suspend fun start1() {
+
+    }
+    private suspend fun start2() {
+
     }
 
 
