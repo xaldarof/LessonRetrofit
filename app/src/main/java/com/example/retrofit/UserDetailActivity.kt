@@ -20,7 +20,6 @@ class UserDetailActivity : AppCompatActivity(), OnUserDetailViewClickListener {
 
         val adapter = AccountsRecyclerAdapter(this)
         binding.followerRv.adapter = adapter
-        binding.followerRv.layoutManager
 
         val retrofit = ApiClient.getClient()?.create(ApiService::class.java)
 
