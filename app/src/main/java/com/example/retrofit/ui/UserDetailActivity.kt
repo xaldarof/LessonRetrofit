@@ -1,9 +1,14 @@
-package com.example.retrofit
+package com.example.retrofit.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.core.view.isGone
+import com.example.retrofit.AccountsRecyclerAdapter
+import com.example.retrofit.GithubAccount
+import com.example.retrofit.OnUserDetailViewClickListener
+import com.example.retrofit.data.network.ApiClient
+import com.example.retrofit.data.network.ApiService
 import com.example.retrofit.databinding.ActivityUserDetailBinding
 import com.squareup.picasso.Picasso
 import retrofit2.Call
@@ -70,7 +75,7 @@ class UserDetailActivity : AppCompatActivity(), OnUserDetailViewClickListener {
                     })
                 }
             }
-        }
+        }.start()
 
     }
 
